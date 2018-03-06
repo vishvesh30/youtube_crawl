@@ -1,5 +1,5 @@
 import json
-
+import datetime
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 
@@ -7,7 +7,8 @@ driver1 = webdriver.Firefox()
 driver2 = webdriver.Firefox()
 url = "https://socialblade.com/youtube/top/5000"
 driver1.get(url)
-output_file = open('youtube_data.json', 'w', encoding='utf-8')
+output_file = open('youtube_data_' + str(datetime.datetime.now().strftime('%H_%M_%S')) + '.json', 'w', encoding='utf-8')
+#output_file = open('youtube_data.json', 'w', encoding='utf-8')
 final_data = []
 
 
