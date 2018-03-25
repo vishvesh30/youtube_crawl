@@ -33,7 +33,8 @@ def get_video_data():
             except NoSuchElementException:
                 print("element  not found")
     except Exception as e:
-        print("unknown error",e)
+        print("unknown error", e)
+
 
 def enter_data_in_db(cid, title, link, date, views, comment_count):
     cur.execute(

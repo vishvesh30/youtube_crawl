@@ -70,15 +70,16 @@ def get_block():
                     enter_data_in_channeldata_table(id, date, video_views, subscribers)
                 conn.commit()
             except Exception as e:
-                print("unknown error",e)
+                print("unknown error", e)
         except Exception as e:
-            print("unknown error",e)
+            print("unknown error", e)
         conn.commit()
 
 
 def enter_data_in_core_table(name, social_url):
     cur.execute("INSERT INTO core_data (channel_name,social_url) VALUES ('{0}','{1}')".format(name, social_url))
     print("data added in core table")
+
 
 def enter_data_in_channeldata_table(id, date, view_count, subscriber_count):
     cur.execute("SELECT * FROM channel_data WHERE date='{0}' AND id_from_core_data='{1}'".format(date, id))
