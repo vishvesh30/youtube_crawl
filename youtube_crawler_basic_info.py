@@ -27,7 +27,7 @@ def get_block():
             video_views = (video_views_tag.text).replace(",", "")
             cur.execute("SELECT * from core_data where channel_name='" + str(name) + "'")
             check_data = cur.fetchone()
-            date=str(datetime.datetime.now().date())
+            date = str(datetime.datetime.now().date())
             if check_data is None:
                 print(name)
                 enter_data_in_core_table(name, url)
@@ -37,7 +37,8 @@ def get_block():
                 enter_data_in_channeldata_table(id, date, video_views, subscribers)
             else:
                 id = str(check_data[0])
-                enter_data_in_channeldata_table(id,date,video_views,subscribers)
+                enter_data_in_channeldata_table(id, date, video_views, subscribers)
+            conn.commit()
         except StaleElementReferenceException:
             print("StaleElementReferenceException retyring...")
             driver1.refresh()
@@ -67,24 +68,30 @@ def get_block():
                 else:
                     id = str(check_data[0])
                     enter_data_in_channeldata_table(id, date, video_views, subscribers)
-            except:
-                print("unknown error")
-        except:
-            print("unknown error")
+                conn.commit()
+            except Exception as e:
+                print("unknown error",e)
+        except Exception as e:
+            print("unknown error",e)
+        conn.commit()
+
 
 def enter_data_in_core_table(name, social_url):
     cur.execute("INSERT INTO core_data (channel_name,social_url) VALUES ('{0}','{1}')".format(name, social_url))
-    conn.commit()
+    print("data added in core table")
 
-def enter_data_in_channeldata_table(id,date,view_count,subscriber_count):
-    cur.execute("SELECT * FROM channel_data WHERE date='{0}' AND id_from_core_data='{1}'".format(date,id))
-    check=cur.fetchone()
+def enter_data_in_channeldata_table(id, date, view_count, subscriber_count):
+    cur.execute("SELECT * FROM channel_data WHERE date='{0}' AND id_from_core_data='{1}'".format(date, id))
+    check = cur.fetchone()
     if check is None:
-        cur.execute("INSERT INTO channel_data (id_from_core_data, date, view_count, subscribers_count) VALUES ('{0}','{1}','{2}','{3}')".format(id,date,view_count,subscriber_count))
-        conn.commit()
-        print("data added")
+        cur.execute(
+            "INSERT INTO channel_data (id_from_core_data, date, view_count, subscribers_count) VALUES ('{0}','{1}','{2}','{3}')".format(
+                id, date, view_count, subscriber_count))
+        print("data added in channeldata table")
     else:
-        print("data already there")
-get_block()
+        print("data already there in channeldata")
 
+
+get_block()
+conn.close()
 driver1.close()
