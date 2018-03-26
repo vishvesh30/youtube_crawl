@@ -53,7 +53,7 @@ def check_or_update_db(name):
 def get_more_data(cname, url):
     new_url = url + "/monthly"
     driver2.get(new_url)
-    name = (cname).replace('\'', "\''")
+    name = (cname).replace('\'', "")
     name = (name).lstrip()
 
     try:
