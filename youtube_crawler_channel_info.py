@@ -17,7 +17,7 @@ cur = conn.cursor()
 
 
 def get_block():
-    for i in range(5, 20):
+    for i in range(5, 505):
         try:
             block = driver1.find_element_by_xpath('/html/body/div[9]/div[2]/div[' + str(i) + ']')
             channel_name_tag = block.find_element_by_xpath('div[3]/a')
@@ -50,9 +50,12 @@ def check_or_update_db(name):
         conn.commit()
 
 
-def get_more_data(name, url):
+def get_more_data(cname, url):
     new_url = url + "/monthly"
     driver2.get(new_url)
+    name = (cname).replace('\'', "\''")
+    name = (name).lstrip()
+
     try:
 
         channeltype = driver2.find_element_by_xpath('//*[@id="youtube-user-page-channeltype"]').text
